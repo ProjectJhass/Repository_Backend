@@ -27,6 +27,11 @@ export class CompaniesController {
     return this.companiesService.findOne(+id);
   }
 
+  @Get(':email')
+  findOneByCorreo(@Param('email') email: string) {
+    return this.companiesService.findOneByEmail(email)
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
     return this.companiesService.update(+id, updateCompanyDto);

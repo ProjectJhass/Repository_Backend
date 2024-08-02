@@ -28,7 +28,7 @@ export class UsersService {
     return this.userRepository.findOneBy({ id_usuario });
   }
 
-  //falta que funcione
+  //falta conectarlo al auth
   update(id_usuario: number, updateUserDto: UpdateUserDto) {
     return this.userRepository.update({id_usuario}, updateUserDto);
   }

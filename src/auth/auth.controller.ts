@@ -9,6 +9,8 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { RegisterCompanyDto } from './dto/registerCompany.dto';
+import { LoginCompanyDto } from './dto/loginCompany.dto';
 import { AuthGuard } from './guard/auth.guard';
 
 @Controller('auth')
@@ -29,6 +31,22 @@ export class AuthController {
     loginDto: LoginDto,
   ) {
     return this.authService.login(loginDto);
+  }
+  
+  @Post('registerCompany')
+  registerCompany(
+    @Body()
+    registerCompanyDto: RegisterCompanyDto,
+  ) {
+    return this.authService.registerCompany(registerCompanyDto);
+  }
+
+  @Post('loginCompany')
+  loginCompany(
+    @Body()
+    loginCompanyDto: LoginCompanyDto,
+  ) {
+    return this.authService.loginCompany(loginCompanyDto);
   }
 
   @Get('profile')
