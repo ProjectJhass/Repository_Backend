@@ -11,11 +11,11 @@ import { ProductModule } from './product/product.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: 'databasejhass.cbs6qceyqazt.us-east-2.rds.amazonaws.com',
       port: 3306,
-      username: 'root',
-      password: '',
-      database: 'JHASS',
+      username: 'admin',
+      password: 'quebendicionve777',
+      database: 'jhass',
       autoLoadEntities: true,
       synchronize: true,
     }),
