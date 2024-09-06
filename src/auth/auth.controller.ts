@@ -1,5 +1,3 @@
-import { ResetToken } from './entities/reset-token.entity';
-import { RefreshToken } from './entities/refresh-token.entity';
 import {
   Body,
   Controller,
@@ -18,6 +16,7 @@ import { RegisterCompanyDto } from './dto/registerCompany.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { RefreshTokenDto } from './dto/refresh-tokens.dto';
+
 @ApiTags('auth')
 @ApiBearerAuth()
 @Controller('auth')
@@ -25,38 +24,22 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  register(
-    @Body()
-    registerDto: RegisterDto,
-  ) {
+  register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
 
   @Post('login')
-  login(
-    @Body()
-    loginDto: LoginDto,
-  ) {
+  login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
   @Post('registerCompany')
-  // @UseGuards(AuthGuard)
-  registerCompany(
-    @Request() req,
-    @Body()
-    registerCompanyDto: RegisterCompanyDto,
-  ) {
+  registerCompany(@Request() req, @Body() registerCompanyDto: RegisterCompanyDto) {
     return this.authService.registerCompany(registerCompanyDto);
   }
 
   @Post('loginCompany')
-  // @UseGuards(AuthGuard)
-  loginCompany(
-    @Request() req,
-    @Body()
-    loginCompanyDto: LoginCompanyDto,
-  ) {
+  loginCompany(@Request() req, @Body() loginCompanyDto: LoginCompanyDto) {
     return this.authService.loginCompany(loginCompanyDto);
   }
 
@@ -65,16 +48,17 @@ export class AuthController {
   profile(@Request() req) {
     return req.user;
   }
-@Post('refresh')
-async refreshTokens(@Body() refreshTokenDto: RefreshTokenDto){
-  return this.authService.refreshTokens(refreshTokenDto.refreshToken);
-}
 
-@UseGuards(AuthGuard)
-@Put('change-password')
-async changePassword(@Request() req, @Body() changePasswordDto: ChangePasswordDto) {
-  const { oldPassword, newPassword } = changePasswordDto;
-  const id_usuario = req.user.id_usuario;  // Esto debería funcionar si el token es decodificado correctamente
-  return this.authService.changePassword(id_usuario, oldPassword, newPassword);
-}
+  @Post('refresh')
+  async refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.authService.refreshTokens(refreshTokenDto.refreshToken);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('change-password')
+  async changePassword(@Request() req, @Body() changePasswordDto: ChangePasswordDto) {
+    const { oldPassword, newPassword } = changePasswordDto;
+    const id_usuario = req.user.id_usuario;
+    return this.authService.changePassword(id_usuario, oldPassword, newPassword);
+  }
 }

@@ -20,12 +20,14 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':correo')
+  // Ruta específica para buscar por correo
+  @Get('correo/:correo')
   findOneByCorreo(@Param('correo') correo: string) {
-    return this.usersService.findOneByEmail(correo)
+    return this.usersService.findOneByEmail(correo);
   }
 
-  @Get(':id_usuario')
+  // Ruta específica para buscar por ID de usuario
+  @Get('id/:id_usuario')
   findOne(@Param('id_usuario') id_usuario: number) {
     return this.usersService.findOne(id_usuario);
   }
@@ -40,8 +42,9 @@ export class UsersController {
     return this.usersService.remove(+id_usuario);
   }
 
-  @Patch()
-  restoreUserById(@Param('id_usuario') id_usuario:number){
-     return this.usersService.restoreUserById(+id_usuario);
+  // Ruta específica para restaurar usuarios por ID
+  @Patch('restore/:id_usuario')
+  restoreUserById(@Param('id_usuario') id_usuario: number) {
+    return this.usersService.restoreUserById(+id_usuario);
   }
 }

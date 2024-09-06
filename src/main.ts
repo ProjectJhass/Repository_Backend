@@ -5,10 +5,9 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  const cors=require("cors")
   // Establecer prefijo global para las rutas de la API
   app.setGlobalPrefix('api/v1');
-
   // Configurar pipes de validación globales
   app.useGlobalPipes(
     new ValidationPipe({
@@ -20,10 +19,14 @@ async function bootstrap() {
 
   // Configurar CORS para permitir solicitudes desde el frontend en Netlify
   app.enableCors({
-    origin: 'https://x3z8q7v5w9-c3p9e4o6j2q1d0z0h5a6s7c8w.netlify.app', // URL del frontend en Netlify
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
-    credentials: true,  // Permitir envío de cookies y credenciales
+    origin: [
+      'https://x3z8q7v5w9-c3p9e4o6j2q1d0z0h5a6s7c8w.netlify.app', // URL exacta de Netlify sin barra final
+      'http://localhost:3000', // URL local para pruebas
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
   });
+  
 
   // Configuración de Swagger para documentación de la API
   const config = new DocumentBuilder()
@@ -38,7 +41,7 @@ async function bootstrap() {
   SwaggerModule.setup('documentation', app, document);
 
   // Inicia la aplicación en el puerto 3000
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 
 bootstrap();
