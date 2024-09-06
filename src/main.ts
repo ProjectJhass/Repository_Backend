@@ -5,9 +5,10 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const cors=require("cors")
+
   // Establecer prefijo global para las rutas de la API
   app.setGlobalPrefix('api/v1');
+
   // Configurar pipes de validación globales
   app.useGlobalPipes(
     new ValidationPipe({
@@ -26,7 +27,6 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  
 
   // Configuración de Swagger para documentación de la API
   const config = new DocumentBuilder()
@@ -40,7 +40,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('documentation', app, document);
 
-  // Inicia la aplicación en el puerto 3000
+  // Inicia la aplicación en el puerto definido en la variable de entorno o en el puerto 3000
   await app.listen(process.env.PORT || 3000);
 }
 
