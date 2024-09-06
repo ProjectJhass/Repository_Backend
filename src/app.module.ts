@@ -14,6 +14,8 @@ import { EmailModule } from './email/email.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath:'.env',
       load: [() => ({
         port: parseInt(process.env.PORT, 10) || 3000,
         database: {
@@ -31,6 +33,7 @@ import { EmailModule } from './email/email.module';
         DATABASE_USER: Joi.string().required(),
         DATABASE_PASSWORD: Joi.string().required(),
         DATABASE_NAME: Joi.string().required(),
+        JWT_SECRET:Joi.string().required(),
       }),
     }),
 

@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { RefreshToken } from './entities/refresh-token.entity';
 import { Injectable, BadRequestException, UnauthorizedException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
@@ -23,6 +24,7 @@ export class AuthService {
     private readonly refreshTokenRepository: Repository<RefreshToken>,
     @InjectRepository(ResetToken)
     private readonly resetTokenRepository: Repository <ResetToken>,
+    private readonly configService :ConfigService,
   ) {}
 
   async register({ nombre, correo, contraseña, edad, telefono, apellido }: RegisterDto) {
