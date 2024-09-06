@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from 'joi';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CompaniesModule } from './companies/companies.module';
@@ -9,18 +11,42 @@ import { ProfileModule } from './profile/profile.module';
 import { RolesModule } from './roles/roles.module';
 import { EmailModule } from './email/email.module';
 
-
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'databasejhass.cbs6qceyqazt.us-east-2.rds.amazonaws.com',
-      port: 3306,
-      username: 'admin',
-      password: 'quebendicionve777',
-      database: 'jhass',
-      autoLoadEntities: true,
-      synchronize: true,
+    ConfigModule.forRoot({
+      load: [() => ({
+        port: parseInt(process.env.PORT, 10) || 3000,
+        database: {
+          host: process.env.DATABASE_HOST,
+          port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
+          username: process.env.DATABASE_USER,
+          password: process.env.DATABASE_PASSWORD,
+          name: process.env.DATABASE_NAME,
+        },
+      })],
+      validationSchema: Joi.object({
+        PORT: Joi.number().default(3000),
+        DATABASE_HOST: Joi.string().required(),
+        DATABASE_PORT: Joi.number().default(5432),
+        DATABASE_USER: Joi.string().required(),
+        DATABASE_PASSWORD: Joi.string().required(),
+        DATABASE_NAME: Joi.string().required(),
+      }),
+    }),
+
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('database.host'),
+        port: configService.get<number>('database.port'),
+        username: configService.get('database.username'),
+        password: configService.get('database.password'),
+        database: configService.get('database.name'),
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
     }),
 
     UsersModule,
@@ -31,7 +57,6 @@ import { EmailModule } from './email/email.module';
     ProfileModule,
     RolesModule,
     EmailModule,
-
   ],
   controllers: [],
   providers: [],
