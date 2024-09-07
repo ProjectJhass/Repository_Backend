@@ -2,6 +2,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { CorsMiddleware } from './middlewares/cors.middleware';
+import { json, urlencoded } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,16 +20,11 @@ async function bootstrap() {
     }),
   );
 
-  // Configurar CORS para permitir solicitudes desde el frontend en Netlify
-  app.enableCors({
-    origin: [
-      'https://websitejhass.netlify.app/', // URL exacta de Netlify sin barra final
-      'http://localhost:3000', // URL local para pruebas
-    ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
+  app.use(new CorsMiddleware().use);
 
+  app.use (json({limit: '50mb'}));
+  app.use(urlencoded({extended:true , limit: '50mb'}))
+  
   // Configuración de Swagger para documentación de la API
   const config = new DocumentBuilder()
     .setTitle('JHASS')             // Título de la documentación
