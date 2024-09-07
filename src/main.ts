@@ -21,7 +21,7 @@ async function bootstrap() {
   // Configurar CORS para permitir solicitudes desde el frontend en Netlify
   app.enableCors({
     origin: [
-      'https://x3z8q7v5w9-c3p9e4o6j2q1d0z0h5a6s7c8w.netlify.app', // URL exacta de Netlify sin barra final
+      'https://websitejhass.netlify.app/', // URL exacta de Netlify sin barra final
       'http://localhost:3000', // URL local para pruebas
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
