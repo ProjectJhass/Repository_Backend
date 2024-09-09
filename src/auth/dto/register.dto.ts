@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsNumber, IsString, Min, MinLength } from 'class-validator';
+import { IsEmail, IsNumber, IsOptional, IsString, Min, MinLength } from 'class-validator';
 
 export class RegisterDto {
   @Transform(({ value }) => value.trim())
@@ -30,5 +30,8 @@ export class RegisterDto {
   @Min(1)
   edad: number;
 
+  @IsOptional() 
+  @IsString()
+  fotoPerfil?: string; 
 
 }

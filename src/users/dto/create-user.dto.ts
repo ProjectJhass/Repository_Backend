@@ -1,6 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsNumber, IsString, Min, MinLength } from 'class-validator';
-
+import { IsEmail, IsNumber, IsOptional, IsString, IsUrl, Min, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @Transform(({ value }) => value.trim())
@@ -26,10 +25,11 @@ export class CreateUserDto {
   @MinLength(6)
   contraseña: string;
 
-
   @IsNumber()
   @Min(1)
   edad: number;
 
-
+  @IsOptional() 
+  @IsString()
+  fotoPerfil?: string; 
 }
