@@ -22,8 +22,7 @@ async function bootstrap() {
 
   app.use(new CorsMiddleware().use);
 
-  app.use (json({limit: '50mb'}));
-  app.use(urlencoded({extended:true , limit: '50mb'}))
+
   
   // Configuración de Swagger para documentación de la API
   const config = new DocumentBuilder()
