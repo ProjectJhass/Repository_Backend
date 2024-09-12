@@ -11,7 +11,6 @@ import { ProfileModule } from './profile/profile.module';
 import { RolesModule } from './roles/roles.module';
 import { EmailModule } from './email/email.module';
 import { CorsMiddleware } from './middlewares/cors.middleware';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -62,7 +61,6 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     ProfileModule,
     RolesModule,
     EmailModule,
-    CloudinaryModule,
     
   ],
   controllers: [],
