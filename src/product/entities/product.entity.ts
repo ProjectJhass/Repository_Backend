@@ -1,4 +1,5 @@
 import { Company } from 'src/companies/entities/company.entity';
+import { Sale } from 'src/sale/entities/sale.entity';
 import {
     Column,
     Entity,
@@ -46,4 +47,7 @@ export class Product {
     // @OneToMany(() => Motion, (motion) => motion.product)
     // @JoinColumn({name: 'motion_id'})
     // motion: Motion[];
-}
+
+    @OneToMany(() => Sale, sale => sale.product)
+    sale: Sale;
+  }

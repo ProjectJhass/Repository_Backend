@@ -11,6 +11,7 @@ import { ProfileModule } from './profile/profile.module';
 import { RolesModule } from './roles/roles.module';
 import { EmailModule } from './email/email.module';
 import { CorsMiddleware } from './middlewares/cors.middleware';
+import { SaleModule } from './sale/sale.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { CorsMiddleware } from './middlewares/cors.middleware';
     ProfileModule,
     RolesModule,
     EmailModule,
+    SaleModule,
     
   ],
   controllers: [],
