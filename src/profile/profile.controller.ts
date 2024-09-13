@@ -20,9 +20,13 @@ export class ProfileController {
     return this.profileService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.profileService.findOne(+id);
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.profileService.findOneUser(+id);
+  // }
+  @Get(':userId')
+  findOneUser(@Param('userId') userId: string) {
+    return this.profileService.findOneUser(+userId);
   }
 
   @Patch(':id')

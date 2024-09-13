@@ -6,7 +6,7 @@ export class CreateProfileDto {
     @Transform(({value}) => value.trim())
     @IsString()
     @MinLength(1)
-    rol:string;
+    roleId:number;
 
     @IsNumber()
     @Min(1)

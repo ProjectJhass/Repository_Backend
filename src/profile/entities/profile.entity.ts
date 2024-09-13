@@ -9,29 +9,34 @@ import {
 
   import { User } from 'src/users/entities/user.entity';
 import { Company } from 'src/companies/entities/company.entity';
+import { Role } from 'src/roles/entities/role.entity';
 
   @Entity('profile')
 export class Profile {
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @Column()
-    rol: string;
-  
-    @DeleteDateColumn()
-    deletedAt: Date;
+  @PrimaryGeneratedColumn()
+  id_profile: number;
 
-    @Column({ name: 'user_id' })
-    userId:number;
+  @Column({ name: 'id'})
+  roleId: number;
 
-    @ManyToOne(() => User, user => user.profile)
-    @JoinColumn({ name: 'user_id'})
-    user: User;
+  @ManyToOne(() => Role, role => role.profile )
+  @JoinColumn({ name: 'id'})
+  role: Role;
 
-    @Column({ name: 'company_id' })
-    companyId:number;
+  @DeleteDateColumn()
+  deletedAt: Date;
 
-    @ManyToOne(() => Company, company => company.profile )
-    @JoinColumn({ name: 'company_id'})
-    company: Company;
+  @Column({ name: 'id_usuario' })
+  userId:number;
+
+  @ManyToOne(() => User, user => user.profile)
+  @JoinColumn({ name: 'id_usuario'})
+  user: User;
+
+  @Column({ name: 'id_company' })
+  companyId:number;
+
+  @ManyToOne(() => Company, company => company.profile )
+  @JoinColumn({ name: 'id_company'})
+  company: Company;
 }

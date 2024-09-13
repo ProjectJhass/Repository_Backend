@@ -1,24 +1,37 @@
+import { User } from 'src/users/entities/user.entity';
 import {
-    Column,
-    Entity,
-    ManyToMany,
-    PrimaryGeneratedColumn,
-    JoinColumn
-  } from 'typeorm';
+  Column,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  JoinColumn
+} from 'typeorm';
+
+{User}
 
 @Entity('task')  
 export class Task {
+  @PrimaryGeneratedColumn()
+  id_task: number;
 
-    @PrimaryGeneratedColumn()
-    id_task: number;
+  @Column()
+  title_task: string;
 
-    @Column()
-    title_task: string;
 
-    @Column()
-    description: string;
+  @Column()
+  start_date: string;
 
-    @Column()
-    state: string;
+  @Column()
+  end_date: string;
+
+  @Column()
+  time_end: string;
+
+  @Column()
+  time_start: string;
+
+
+  @ManyToMany(() => User, (user) => user.task)
+  users: User[];
 
 }

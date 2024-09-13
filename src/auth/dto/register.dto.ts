@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsEmail, IsNumber, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import { Task } from 'src/task/entities/task.entity';
 
 export class RegisterDto {
   @Transform(({ value }) => value.trim())
@@ -29,6 +30,7 @@ export class RegisterDto {
   @IsNumber()
   @Min(1)
   edad: number;
+  task: Task[];
 
   @IsOptional() 
   @IsString()

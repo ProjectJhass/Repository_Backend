@@ -15,4 +15,8 @@ export class CreateRoleDto {
     @IsNumber()
     @Min(0)
     rank: number;
+
+    @IsNumber()
+    @Min(0)
+    companyId: number;
 }

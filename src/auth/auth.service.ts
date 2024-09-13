@@ -14,6 +14,8 @@ import { v4 as uuidv4} from 'uuid';
 import { MoreThan, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResetToken } from './entities/reset-token.entity';
+import { ProfileService } from 'src/profile/profile.service';
+import { RolesService } from 'src/roles/roles.service';
 @Injectable()
 export class AuthService {
   constructor(
@@ -25,6 +27,8 @@ export class AuthService {
     @InjectRepository(ResetToken)
     private readonly resetTokenRepository: Repository <ResetToken>,
     private readonly configService :ConfigService,
+    private readonly profileService:ProfileService,
+    private readonly rolesService:RolesService,
   ) {}
 
   async register({ nombre, correo, contraseña, edad, telefono, apellido, fotoPerfil }: RegisterDto) {
@@ -141,21 +145,21 @@ export class AuthService {
     });  
   }
 
-  async loginCompany({ email, rol }: LoginCompanyDto) {
-    const company = await this.companiesService.findOneByEmail(email);
-
+  async loginCompany({ email, companyId, userId, roleId }: LoginCompanyDto) {
+    const companyUser= await this.companiesService.findOneByEmail(email);
+    const role= this.rolesService.findOne(roleId);
     
-    if (!company) {
+    if (!companyUser) {
       throw new UnauthorizedException('El correo electrónico es incorrecto');
     }
 
-    const payload = { email: company.email, rol: rol };
+    const payload = { email: email, rol: roleId, rank: (await role).rank };
     const token = await this.jwtService.signAsync(payload);
 
+    this.profileService.create({roleId, userId, companyId})
+
     return {
-      token,
-      email,
-      rol
+      token
     };
   }
   async changePassword(id_usuario: number, oldPassword: string, newPassword: string) {

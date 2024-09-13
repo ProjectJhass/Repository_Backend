@@ -2,10 +2,13 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Profile } from 'src/profile/entities/profile.entity'; 
+import { Task } from 'src/task/entities/task.entity';
 
 @Entity('usuario')
 export class User {
@@ -30,12 +33,28 @@ export class User {
   @Column({ nullable: false })
   contraseña: string;
 
-  @Column({ nullable: true }) // Nueva columna para la URL de la foto de perfil
-  fotoPerfil: string;
-
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() => Profile, profile => profile.user)
+  @OneToMany(() => Profile, profile => profile.user )
   profile: Profile[];
+
+  
+  @ManyToMany(() => Task, (task) => task.users)
+  @JoinTable({
+    name: "user_task",
+    joinColumn:{
+      name: "user_id",
+    //   referencedColumnName: "id_usuario",
+    //  foreignKeyConstraintName: "user_task_user_id"
+      },
+      inverseJoinColumn:{
+        name:"task_id",
+        // referencedColumnName: "id_task",
+        // foreignKeyConstraintName: "user_task_task_id"
+      }
+  })
+    task: Task[];
+
+
 }

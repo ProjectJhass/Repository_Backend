@@ -20,8 +20,8 @@ export class ProfileService {
     return `This action returns all profile`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} profile`;
+  findOneUser(userId: number) {
+    return this.profileRepository.findBy({userId});
   }
 
   update(id: number, updateProfileDto: UpdateProfileDto) {

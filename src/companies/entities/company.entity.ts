@@ -7,40 +7,45 @@ import {
     PrimaryGeneratedColumn,
   } from 'typeorm';
 
-  import { User } from 'src/users/entities/user.entity'; 
-import { Profile } from 'src/profile/entities/profile.entity';
+  import { Role } from 'src/roles/entities/role.entity';
+  import { Profile } from 'src/profile/entities/profile.entity';
 
 
 
 @Entity('company')
 export class Company {
 
-    @PrimaryGeneratedColumn()
-    id: number;
 
-    @Column()
-    name: string;
+  @PrimaryGeneratedColumn()
+  id_company: number;
 
-    @Column({ unique: true })
-    email: string;
+  @Column()
+  name: string;
 
-    @Column()
-    description: string;
+  @Column({ unique: true })
+  email: string;
 
-    @Column()
-    sector: string;
+  @Column()
+  description: string;
 
-    @Column()
-    address: string;
+  @Column()
+  sector: string;
 
-    @Column({ nullable: false, default: 'micro' })
-    type: string;
+  @Column()
+  address: string;
 
-    @DeleteDateColumn()
-    deletedAt: Date;
+  @Column({ nullable: false, default: 'micro' })
+  type: string;
 
-    @OneToMany(() => Profile, profile => profile.company )
-    profile: Profile[];
+  @DeleteDateColumn()
+  deletedAt: Date;
+
+  @OneToMany(() => Profile, profile => profile.company )
+  profile: Profile[];
+
+  @OneToMany(() => Role, role => role.company )
+  role: Role[];
+  
 
 
 }

@@ -21,13 +21,13 @@ export class UsersController {
   }
 
   // Ruta específica para buscar por correo
-  @Get('correo/:correo')
+  @Get(':correo')
   findOneByCorreo(@Param('correo') correo: string) {
     return this.usersService.findOneByEmail(correo);
   }
 
   // Ruta específica para buscar por ID de usuario
-  @Get('id/:id_usuario')
+  @Get(':id_usuario')
   findOne(@Param('id_usuario') id_usuario: number) {
     return this.usersService.findOne(id_usuario);
   }

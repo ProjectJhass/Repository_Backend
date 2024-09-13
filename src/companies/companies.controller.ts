@@ -10,39 +10,41 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
 
-  // Ruta para crear una nueva compañía
+  @Post()
+  createt(@Body() createCompanyDto: CreateCompanyDto) {
+    return this.companiesService.create(createCompanyDto);
+  }
+
   @Post()
   create(@Body() createCompanyDto: CreateCompanyDto) {
     return this.companiesService.create(createCompanyDto);
   }
 
-  // Ruta para obtener todas las compañías
   @Get()
   findAll() {
     return this.companiesService.findAll();
   }
 
-  // Ruta para obtener una compañía por ID
-  @Get('id/:id') // Prefijo para distinguir claramente que es un ID
-  findOne(@Param('id') id: string) {
-    return this.companiesService.findOne(+id);
+
+  @Get(':id_company')
+  findOne(@Param('id_company') id_company: string) {
+    return this.companiesService.findOne(+id_company);
   }
 
-  // Ruta para obtener una compañía por correo electrónico
-  @Get('email/:email') // Prefijo para distinguir que es un correo electrónico
-  findOneByEmail(@Param('email') email: string) {
-    return this.companiesService.findOneByEmail(email);
+
+  @Get(':email')
+  findOneByEmail(@Param('email') email: string){
+    return this.companiesService.findOneByEmail(email)
   }
 
-  // Ruta para actualizar una compañía por ID
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return this.companiesService.update(+id, updateCompanyDto);
-  }
 
-  // Ruta para eliminar una compañía por ID
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.companiesService.remove(+id);
+  @Patch(':id_company')
+  update(@Param('id_company') id_company: string, @Body() updateCompanyDto: UpdateCompanyDto) {
+    return this.companiesService.update(+id_company, updateCompanyDto);
+  }
+  
+  @Delete(':id_company')
+  remove(@Param('id_company') id_company: string) {
+    return this.companiesService.remove(+id_company);
   }
 }
