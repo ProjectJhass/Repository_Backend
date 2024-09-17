@@ -3,10 +3,18 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { CorsMiddleware } from './middlewares/cors.middleware';
-import { json, urlencoded } from 'express';
-
+import { join } from 'path';
+import * as fs  from 'fs';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+
+  const httpsOptions = {
+    key: fs.readFileSync(join(__dirname, '../secrets/private-key.pem')),
+    cert: fs.readFileSync(join(__dirname, '../secrets/public-certificate.pem')),
+  };
+  
+  const app = await NestFactory.create(AppModule,{
+    httpsOptions,
+  });
 
   // Establecer prefijo global para las rutas de la API
   app.setGlobalPrefix('api/v1');
@@ -39,6 +47,8 @@ async function bootstrap() {
   // Inicia la aplicación en el puerto definido en la variable de entorno o en el puerto 3000
   const port=process.env.PORT || 3000
   await app.listen(port);
+
+  console.log(`Application is running on: https://localhost:${port}`);
 }
 
 bootstrap();
