@@ -26,13 +26,16 @@ export class RegisterDto {
   @MinLength(6)
   contraseña: string;
 
-  @IsNumber()
-  @Min(1)
-  edad: number;
-
   @IsOptional()
   @IsUrl()
   fotoPerfil?: string; // Nuevo campo para la URL de la foto de perfil
 
-  task?: Task[];
+
+  @IsNumber()
+  @Min(1)
+  edad: number;
+  task: Task[];
+
+
+
 }
