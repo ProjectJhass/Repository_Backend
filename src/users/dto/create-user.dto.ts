@@ -28,4 +28,8 @@ export class CreateUserDto {
   @IsNumber()
   @Min(1)
   edad: number;
+
+  @IsOptional()
+  @IsUrl()
+  fotoPerfil?: string;
 }

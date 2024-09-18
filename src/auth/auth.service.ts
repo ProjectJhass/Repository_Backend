@@ -31,7 +31,7 @@ export class AuthService {
     private readonly rolesService:RolesService,
   ) {}
 
-  async register({ nombre, correo, contraseña, edad, telefono, apellido }: RegisterDto) {
+  async register({ nombre, correo, contraseña, edad, telefono, apellido, fotoPerfil }: RegisterDto) {
     const user = await this.usersService.findOneByEmail(correo);
 
     if (user) {
@@ -47,6 +47,7 @@ export class AuthService {
       apellido,
       correo,
       contraseña: hashedPassword,
+      fotoPerfil,
     });
   }
 

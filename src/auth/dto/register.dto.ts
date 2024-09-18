@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsNumber, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import { IsEmail, IsNumber, IsOptional, IsString, IsUrl, Min, MinLength } from 'class-validator';
 import { Task } from 'src/task/entities/task.entity';
 
 export class RegisterDto {
@@ -26,12 +26,13 @@ export class RegisterDto {
   @MinLength(6)
   contraseña: string;
 
-
   @IsNumber()
   @Min(1)
   edad: number;
-  task: Task[];
 
+  @IsOptional()
+  @IsUrl()
+  fotoPerfil?: string; // Nuevo campo para la URL de la foto de perfil
 
-
+  task?: Task[];
 }

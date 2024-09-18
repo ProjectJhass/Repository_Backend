@@ -33,28 +33,24 @@ export class User {
   @Column({ nullable: false })
   contraseña: string;
 
+  @Column({ nullable: true })
+  fotoPerfil?: string; // Nuevo campo para la URL de la foto de perfil
+
   @DeleteDateColumn()
   deletedAt: Date;
 
   @OneToMany(() => Profile, profile => profile.user )
   profile: Profile[];
 
-  
   @ManyToMany(() => Task, (task) => task.users)
   @JoinTable({
     name: "user_task",
-    joinColumn:{
+    joinColumn: {
       name: "user_id",
-    //   referencedColumnName: "id_usuario",
-    //  foreignKeyConstraintName: "user_task_user_id"
-      },
-      inverseJoinColumn:{
-        name:"task_id",
-        // referencedColumnName: "id_task",
-        // foreignKeyConstraintName: "user_task_task_id"
-      }
+    },
+    inverseJoinColumn: {
+      name: "task_id",
+    }
   })
-    task: Task[];
-
-
+  task: Task[];
 }
