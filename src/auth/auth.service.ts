@@ -115,10 +115,12 @@ export class AuthService {
 
     async storeRefreshToken(token: string, id_usuario){
       
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 1);
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 1);
 
-     const refreshToken =await this.refreshTokenRepository.create({
+    
+
+    const refreshToken =await this.refreshTokenRepository.create({
       token,
       id_usuario,
       expiryDate

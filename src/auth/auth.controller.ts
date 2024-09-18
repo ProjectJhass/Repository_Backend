@@ -5,6 +5,7 @@ import {
   Post,
   Put,
   Request,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -55,6 +56,9 @@ export class AuthController {
 
   @Post('refresh')
   async refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
+      if (!refreshTokenDto) {
+        throw new UnauthorizedException('Refresh token es requerido');
+      }
     return this.authService.refreshTokens(refreshTokenDto.refreshToken);
   }
 
