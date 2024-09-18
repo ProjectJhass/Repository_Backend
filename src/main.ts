@@ -3,19 +3,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { CorsMiddleware } from './middlewares/cors.middleware';
-import { join } from 'path';
-import * as fs from 'fs';
-import * as https from 'https';
 
 async function bootstrap() {
-  // Opciones para HTTPS
-  const httpsOptions = {
-    key: fs.readFileSync(join(__dirname, '../secrets/private-key.pem')),
-    cert: fs.readFileSync(join(__dirname, '../secrets/public-certificate.pem')),
-  };
-
   // Crear la app de NestJS
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule);
 
   // Establecer prefijo global para las rutas de la API
   app.setGlobalPrefix('api/v1');
@@ -29,9 +20,10 @@ async function bootstrap() {
     }),
   );
 
+  // Habilitar CORS
   app.use(new CorsMiddleware().use);
 
-  // Configuración de Swagger para documentación de la API
+  // Configuración de Swagger para la documentación de la API
   const config = new DocumentBuilder()
     .setTitle('JHASS')             // Título de la documentación
     .setDescription('Hola')        // Descripción breve
@@ -43,13 +35,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('documentation', app, document);
 
-  // Definir el puerto para HTTPS
-  const httpsPort = process.env.HTTPS_PORT || 3001;
+  // Definir el puerto usando la variable de entorno PORT de Render
+  const port = process.env.PORT || 3000;  // Usamos PORT asignado por Render, con un fallback a 3000
 
-  // Crear y escuchar el servidor HTTPS
-  const httpsServer = https.createServer(httpsOptions, app.getHttpAdapter().getInstance());
-  httpsServer.listen(httpsPort, () => {
-    console.log(`Application is running on: https://localhost:${httpsPort}`);
+  // Iniciar la aplicación y escuchar en el puerto especificado
+  await app.listen(port, async () => {
+    console.log(`Application is running on: ${await app.getUrl()}`);
   });
 }
 

@@ -32,8 +32,6 @@ export class RegisterDto {
   edad: number;
   task: Task[];
 
-  @IsOptional() 
-  @IsString()
-  fotoPerfil?: string; 
+
 
 }
