@@ -2,10 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('profile')
-@ApiBearerAuth()
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
@@ -22,8 +19,9 @@ export class ProfileController {
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {
-  //   return this.profileService.findOneUser(+id);
+  //   return this.profileService.findOne(+id);
   // }
+
   @Get(':userId')
   findOneUser(@Param('userId') userId: string) {
     return this.profileService.findOneUser(+userId);
