@@ -1,3 +1,4 @@
+import { getChatbotConfig } from 'src/config/chat.config';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -12,13 +13,15 @@ import { RolesModule } from './roles/roles.module';
 import { EmailModule } from './email/email.module';
 import { CorsMiddleware } from './middlewares/cors.middleware';
 import { SaleModule } from './sale/sale.module';
+import { ChatBotModule } from './chatBot/chat.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:'.env',
-      load: [() => ({
+      load: [ () => ({
+        getChatbotConfig,
         port: parseInt(process.env.PORT, 10) || 3000,
         database: {
           host: process.env.DATABASE_HOST,
@@ -63,7 +66,7 @@ import { SaleModule } from './sale/sale.module';
     RolesModule,
     EmailModule,
     SaleModule,
-    
+    ChatBotModule,
   ],
   controllers: [],
   providers: [],
