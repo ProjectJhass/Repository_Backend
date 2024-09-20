@@ -1,31 +1,24 @@
 import { Controller, Get, Res } from '@nestjs/common';
+import { PdfService } from './reports.service';
 import { Response } from 'express';
-import { ReportsService } from './reports.service';
 
-@Controller('reports')
-export class ReportsController {
-  constructor(private readonly reportsService: ReportsService) {}
+@Controller('pdf')
+export class PdfController {
+  constructor(private readonly pdfService: PdfService) {}
 
-  @Get('excel')
-  async generateExcelReport(@Res() res: Response) {
-    // Obtener el workbook desde el servicio
-    const workbook = await this.reportsService.generateExcelReport();
+  @Get('all-users-report')
+  async getAllUsersReport(@Res() res: Response) {
+    // Llama al servicio para generar el reporte de todos los usuarios
+    const pdfBuffer = await this.pdfService.generateAllUsersReport();
 
-    // Definir nombre del archivo
-    const filename = 'reporte-usuarios.xlsx';
+    // Configura la respuesta HTTP
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename="all-users-report.pdf"',
+      'Content-Length': pdfBuffer.length,
+    });
 
-    // Configurar cabeceras HTTP
-    res.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    );
-    res.setHeader(
-      'Content-Disposition',
-      `attachment; filename=${filename}`,
-    );
-
-    // Enviar el archivo Excel al cliente
-    await workbook.xlsx.write(res);
-    res.end();
+    // Envía el PDF como respuesta
+    res.send(pdfBuffer);
   }
 }

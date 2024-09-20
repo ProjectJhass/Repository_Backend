@@ -1,4 +1,4 @@
-import { getChatbotConfig } from 'src/config/chat.config';
+// import { getChatbotConfig } from 'src/config/chat.config';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -13,7 +13,8 @@ import { RolesModule } from './roles/roles.module';
 import { EmailModule } from './email/email.module';
 import { CorsMiddleware } from './middlewares/cors.middleware';
 import { SaleModule } from './sale/sale.module';
-import { ChatBotModule } from './chatBot/chat.module';
+// import { ChatBotModule } from './chatBot/chat.module';
+import { NoveltyModule } from './novelty/novelty.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { ChatBotModule } from './chatBot/chat.module';
       isGlobal: true,
       envFilePath:'.env',
       load: [ () => ({
-        getChatbotConfig,
+        // getChatbotConfig,
         port: parseInt(process.env.PORT, 10) || 3000,
         database: {
           host: process.env.DATABASE_HOST,
@@ -66,7 +67,8 @@ import { ChatBotModule } from './chatBot/chat.module';
     RolesModule,
     EmailModule,
     SaleModule,
-    ChatBotModule,
+    // ChatBotModule,
+    NoveltyModule,
   ],
   controllers: [],
   providers: [],

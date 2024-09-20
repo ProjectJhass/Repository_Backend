@@ -1,41 +1,65 @@
 import { Injectable } from '@nestjs/common';
-import * as ExcelJS from 'exceljs';
-import { find } from 'rxjs';
-import { AuthService } from 'src/auth/auth.service';
+import * as PDFDocument from 'pdfkit';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { UsersService } from 'src/users/users.service';
+import { Profile } from 'src/profile/entities/profile.entity';
 
 @Injectable()
-export class ReportsService {
-    constructor(
-        private readonly authService: AuthService,
-    ) {}
-  async generateExcelReport() {
+export class PdfService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(Profile)
+    private readonly profileRepository: Repository<Profile>,
+  ) {}
 
+  async generateAllUsersReport(): Promise<Buffer> {
+    // Obtén todos los usuarios desde la base de datos
+    const users = await this.userRepository.find();
 
-    // Crear una nueva instancia de Workbook
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Reporte de Usuarios');
+    if (!users || users.length === 0) {
+      throw new Error('No hay usuarios disponibles para el reporte');
+    }
 
-    // Definir las columnas del archivo Excel
-    worksheet.columns = [
-      { header: 'ID', key: 'id', width: 10 },
-      { header: 'Nombre', key: 'name', width: 30 },
-      { header: 'Correo Electrónico', key: 'email', width: 30 },
-      { header: 'Fecha de Registro', key: 'createdAt', width: 20 },
-    ];
+    // Genera el documento PDF
+    const doc = new PDFDocument();
+    const chunks = [];
 
-    // Agregar datos de ejemplo
-    const data = [
-      { id: 1, name: name, email: 'juan@example.com', createdAt: '2023-09-01' },
-      { id: 2, name: 'Ana García', email: 'ana@example.com', createdAt: '2023-09-02' },
-      { id: 3, name: 'Pedro Díaz', email: 'pedro@example.com', createdAt: '2023-09-03' },
-    ];
+    doc.on('data', (chunk) => chunks.push(chunk));
+    doc.on('end', () => console.log('PDF creado'));
 
-    data.forEach((item) => {
-      worksheet.addRow(item);
+    doc.fontSize(20).text('Reporte de Usuarios', { align: 'center' });
+    doc.moveDown();
+
+    // Añade información de cada usuario al PDF
+    users.forEach((user, index) => {
+      doc.fontSize(16).text(`Usuario ${index + 1}`, { underline: true });
+      doc.fontSize(14).text(`Nombre: ${user.nombre} ${user.apellido}`);
+      doc.text(`Correo: ${user.correo}`);
+      doc.text(`Teléfono: ${user.telefono}`);
+      doc.text(`Edad: ${user.edad}`);
+
+      // if (profile.role) {
+      //   doc.text(`Rol: ${profile.role}`);
+      // }
+
+      // Puedes obtener el perfil del usuario, si es necesario
+      // const profile = await this.profileRepository.findOne({ where: { user: { id_usuario: user.id_usuario } } });
+
+      doc.moveDown();
     });
 
-    return workbook;
+    doc.end();
+
+    // Devuelve el PDF como Buffer
+    return new Promise((resolve, reject) => {
+      doc.on('end', () => {
+        const result = Buffer.concat(chunks);
+        resolve(result);
+      });
+
+      doc.on('error', (err) => reject(err));
+    });
   }
 }
