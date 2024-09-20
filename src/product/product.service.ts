@@ -26,6 +26,9 @@ export class ProductService {
   //     }
   //   });
   // }
+  async findAll(): Promise<Product[]> {
+    return await this.productRepository.find();  // Trae todos los productos
+  }
 
   findOne(id_product: number) {
     return this.productRepository.findOneBy({id_product});

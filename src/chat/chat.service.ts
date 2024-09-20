@@ -10,6 +10,7 @@ export class ChatService {
   async sendMessage(history: any[], question: string) {
     let historyChat = START_CHAT.concat(history);
 
+    // return { historyChat }
     // Comprobar si hay una respuesta predefinida para la pregunta
     const predefinedResponse = this.getPredefinedResponse(question);
     if (predefinedResponse) {
@@ -27,7 +28,7 @@ export class ChatService {
     const sendQuestion = await chat.sendMessage(question);
     const response = await sendQuestion.response;
     const text = response.text();
-
+    return { text }
     history.push({ role: 'user', parts: question });
     history.push({ role: 'Chat', parts: text });
 
