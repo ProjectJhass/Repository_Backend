@@ -30,6 +30,6 @@ export class CreateUserDto {
   edad: number;
 
   @IsOptional()
-  @IsUrl()
+  @IsString()
   fotoPerfil?: string;
 }

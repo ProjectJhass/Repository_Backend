@@ -27,7 +27,7 @@ export class RegisterDto {
   contraseña: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsString()
   fotoPerfil?: string; // Nuevo campo para la URL de la foto de perfil
 
 

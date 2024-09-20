@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Profile } from 'src/profile/entities/profile.entity'; 
 import { Task } from 'src/task/entities/task.entity';
+import { Novelty } from 'src/novelty/entities/novelty.entity';
 
 @Entity('usuario')
 export class User {
@@ -33,7 +34,7 @@ export class User {
   @Column({ nullable: false })
   contraseña: string;
   
-  @Column({ nullable: true })
+  @Column()
   fotoPerfil?: string; // Nuevo campo para la URL de la foto de perfil
 
   @DeleteDateColumn()
@@ -59,5 +60,7 @@ export class User {
   })
     task: Task[];
 
+    @OneToMany(() => Novelty, novetly => novetly.user)
+    novelty: Novelty;
 
 }

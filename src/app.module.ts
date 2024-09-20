@@ -13,6 +13,8 @@ import { EmailModule } from './email/email.module';
 import { CorsMiddleware } from './middlewares/cors.middleware';
 import { SaleModule } from './sale/sale.module';
 import { ChatModule } from './chat/chat.module';
+import { NoveltyModule } from './novelty/novelty.module';
+import { ReportsModule } from './reports/reports.module';
 
 
 @Module({
@@ -66,7 +68,8 @@ import { ChatModule } from './chat/chat.module';
     EmailModule,
     SaleModule,
     ChatModule,
-    
+    NoveltyModule,
+    ReportsModule,
 
   ],
   controllers: [],
